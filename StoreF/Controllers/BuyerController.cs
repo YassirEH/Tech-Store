@@ -96,7 +96,7 @@ namespace webApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{buyerId}")]
+        [HttpDelete("Delete Buyer/{buyerId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

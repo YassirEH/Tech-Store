@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function BuyersList() {
+  const [Id, setId] = useState("");
   const [FName, setFName] = useState("");
   const [LName, setLName] = useState("");
   const [Email, setEmail] = useState("");
@@ -43,6 +44,35 @@ function BuyersList() {
       alert(err);
     }
   }
+
+  async function editBuyer(Buyer) {
+    setFName(Buyer.fName)
+    setLName(Buyer.lName);
+    setEmail(Buyer.email);
+
+    setId(Buyer.id);
+  }
+
+  async function DeleteBuyer(id) {
+    if (!id) {
+      console.error('Id is not set. Cannot delete the buyer.');
+      return;
+    }
+
+    try {
+      await axios.delete(`https://localhost:7156/api/Buyer/Delete Buyer/${id}`);
+      alert("Buyer deleted Successfully");
+      setId("");
+      setFName("");
+      setLName("");
+      setEmail("");
+      Load();
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+
 
   return (
     <div>
@@ -112,6 +142,7 @@ function BuyersList() {
             return (
               <tbody key={index}>
                 <tr>
+                  <td>{Buyer.id}</td>
                   <td>{Buyer.fName}</td>
                   <td>{Buyer.lName}</td>
                   <td>{Buyer.email}</td>
@@ -119,7 +150,13 @@ function BuyersList() {
                     <button type="button" className="btn btn-warning">
                       Edit
                     </button>
-                    <button type="button" className="btn btn-danger">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        DeleteBuyer(Buyer.id); // Delete the buyer
+                      }}
+                    >
                       Delete
                     </button>
                   </td>
