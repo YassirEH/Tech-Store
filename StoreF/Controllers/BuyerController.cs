@@ -78,11 +78,11 @@ namespace webApi.Controllers
             return CreatedAtAction(nameof(GetBuyerById), new { buyerId = buyer.Id }, buyerDto);
         }
 
-        [HttpPut("{buyerId}")]
+        [HttpPut("Update Buyer")]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateBuyer(int buyerId, BuyerDto buyerDto)
+        public IActionResult UpdateBuyer(int buyerId, [FromBody] BuyerDto buyerDto)
         {
             if (!_buyerRep.BuyerExists(buyerId))
                 return NotFound();
@@ -91,7 +91,11 @@ namespace webApi.Controllers
                 return BadRequest(ModelState);
 
             var existingBuyer = _buyerRep.GetBuyerById(buyerId);
-            _mapper.Map(buyerDto, existingBuyer);
+
+            existingBuyer.FName = buyerDto.FName;
+            existingBuyer.LName = buyerDto.LName;
+            existingBuyer.Email = buyerDto.Email;
+
             _buyerRep.UpdateBuyer(existingBuyer);
             return NoContent();
         }

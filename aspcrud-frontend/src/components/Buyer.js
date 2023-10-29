@@ -72,6 +72,28 @@ function BuyersList() {
     }
   }
 
+  async function UpdateBuyer() {
+    if (!Id) {
+      console.error('Id is not set. Cannot update the buyer.');
+      return;
+    }
+  
+    try {
+      await axios.put(`https://localhost:7156/api/Buyer/Update Buyer?buyerId=${Id}`, {
+        fName: FName,
+        lName: LName,
+        email: Email,
+      });
+      alert("Buyer updated successfully");
+      setId("");
+      setFName("");
+      setLName("");
+      setEmail("");
+      Load();
+    } catch (err) {
+      alert(err);
+    }
+  }
 
 
   return (
@@ -114,11 +136,13 @@ function BuyersList() {
             />
           </div>
           <div>
-            <button className="btn btn-primary mt-4" onClick={save}>
-              Register
-            </button>
-            <button className="btn btn-warning mt-4">Update</button>
-          </div>
+          <button className="btn btn-primary mt-4" onClick={save}>
+            Register
+          </button>
+          <button className="btn btn-warning mt-4" onClick={UpdateBuyer}>
+            Update
+          </button>
+        </div>
         </form>
       </div>
       <br></br>
@@ -126,6 +150,7 @@ function BuyersList() {
       <table className="table table-dark" align="center">
         <thead>
           <tr>
+          <th scope="col">Buyer Id</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Email</th>
@@ -147,14 +172,16 @@ function BuyersList() {
                   <td>{Buyer.lName}</td>
                   <td>{Buyer.email}</td>
                   <td>
-                    <button type="button" className="btn btn-warning">
+                    <button type="button" className="btn btn-warning" onClick={() => {
+                        editBuyer(Buyer);
+                      }}>
                       Edit
                     </button>
                     <button
                       type="button"
                       className="btn btn-danger"
                       onClick={() => {
-                        DeleteBuyer(Buyer.id); // Delete the buyer
+                        DeleteBuyer(Buyer.id);
                       }}
                     >
                       Delete
