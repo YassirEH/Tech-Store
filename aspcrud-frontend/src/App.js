@@ -1,11 +1,11 @@
-import BuyersList from "./components/Buyer";
-import CategoryList from "./components/Category";
+
+import ProductList from "./components/Products";
 
 
 function App() {
   return (
     <div className="App">
-      
+      <ProductList />
     </div>
   );
 }
