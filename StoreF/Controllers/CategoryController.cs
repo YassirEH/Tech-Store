@@ -21,7 +21,7 @@ namespace webApi.Controllers
             _categoryRep = categoryRep;
         }
 
-        [HttpGet]
+        [HttpGet("Get All Categories")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
@@ -31,7 +31,7 @@ namespace webApi.Controllers
             return !ModelState.IsValid ? BadRequest(ModelState) : Response(categoryDto);
         }
 
-        [HttpGet("{categoryId}")]
+        [HttpGet("Get Category By Id/{categoryId}")]
         [ProducesResponseType(200, Type = typeof(Category))]
         [ProducesResponseType(400)]
         public IActionResult GetCategory(int categoryId)
@@ -55,7 +55,7 @@ namespace webApi.Controllers
             return !ModelState.IsValid ? BadRequest(ModelState) : Response(categoryDto);
         }
 
-        [HttpPost]
+        [HttpPost("Create Category")]
         [ProducesResponseType(204, Type = typeof(CategoryDto))]
         [ProducesResponseType(400)]
         public IActionResult CreateCategory([FromBody] CategoryDto categoryDto)
@@ -72,7 +72,7 @@ namespace webApi.Controllers
             return CreatedAtAction(nameof(GetCategory), new { categoryId = category.Id }, createdCategoryDto);
         }
 
-        [HttpPut("{categoryId}")]
+        [HttpPut("Update Category/{categoryId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
@@ -93,7 +93,7 @@ namespace webApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{categoryId}")]
+        [HttpDelete("Delete Category/{categoryId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]

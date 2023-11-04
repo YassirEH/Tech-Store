@@ -9,10 +9,29 @@ function ProductList() {
   const [filteredProducts, setFilteredProducts] = useState(null);
   const [productName, setProductName] = useState("");
   const [productdescription, setProductdescription] = useState("");
-  const [productCategory, setProductCategory] = useState(""); 
+  const [productCategory, setProductCategory] = useState("");
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    (async () => await loadProducts())();
+    (async () => {
+      await loadProducts();
+      await loadCategories();
+    })();
   }, []);
+
+  async function loadCategories() {
+    try {
+      const result = await axios.get("https://localhost:7156/api/Category/Get All Categories");
+  
+      if (Array.isArray(result.data.data)) {
+        setCategories(result.data.data);
+      } else {
+        console.error("API response does not contain an array:", result.data);
+      }
+    } catch (err) {
+      alert(err);
+    }
+  }
 
   async function loadProducts() {
     try {
@@ -36,22 +55,24 @@ function ProductList() {
       return;
     }
 
-    // Prepare the product object to be sent to the server
+    if (!productCategory) {
+      alert('Please select a category.');
+      return;
+    }
+
     const newProduct = {
       name: productName,
       description: productdescription,
-      category: productCategory, // Assign the selected category
+      category: productCategory,
     };
 
     try {
-      const response = await axios.post("https://localhost:7156/api/Product/Create Product/{categoryId}", newProduct);
-      if (response.status === 201) {
-        alert("Product Registration Successful");
-        setProductName("");
-        setProductdescription("");
-        setProductCategory(""); // Reset category
-        loadProducts();
-      }
+      await axios.post(`https://localhost:7156/api/Product/Create Product/${productCategory}`, newProduct);
+      alert("Product Registration Successful");
+      setProductName("");
+      setProductdescription("");
+      setProductCategory("");
+      loadProducts();
     } catch (err) {
       alert(err);
     }
@@ -71,7 +92,7 @@ function ProductList() {
     }
 
     try {
-      await axios.delete(`https://localhost:7156/api/Product/DeleteProduct/${productId}`);
+      await axios.delete(`https://localhost:7156/api/Product/Delete Product/${productId}`);
       alert("Product deleted Successfully");
       setSelectedProduct(null);
       setProductName("");
@@ -98,12 +119,12 @@ function ProductList() {
     };
 
     try {
-      await axios.put(`https://localhost:7156/api/Product/UpdateProduct/${selectedProduct.id}`, updatedProduct);
+      await axios.put(`https://localhost:7156/api/Product/Update Product/${selectedProduct.id}`, updatedProduct);
       alert("Product updated successfully");
       setSelectedProduct(null);
       setProductName("");
       setProductdescription("");
-      setProductCategory(""); 
+      setProductCategory("");
       loadProducts();
     } catch (err) {
       alert(err);
@@ -124,6 +145,7 @@ function ProductList() {
     <div className="container mt-4">
       <h1 className="text-center">Products List</h1>
 
+      {/* Form for creating a new product */}
       <form className="mb-4" onSubmit={save}>
         <div className="form-row">
           <div className="col">
@@ -141,7 +163,7 @@ function ProductList() {
             <input
               type="text"
               className="form-control"
-              placeholder="Product Details"
+              placeholder="Product Description"
               value={productdescription}
               onChange={(event) => {
                 setProductdescription(event.target.value);
@@ -149,10 +171,25 @@ function ProductList() {
             />
           </div>
           <div className="col">
-            {/* Add an input or select element for product category */}
+            <select
+              value={productCategory}
+              onChange={(event) => {
+                setProductCategory(event.target.value);
+              }}
+              className="form-control"
+            >
+              <option value="">Select a Category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="col">
-            <button type="submit" className="btn btn-primary">Register</button>
+            <button type="submit" className="btn btn-primary">
+              Register
+            </button>
           </div>
         </div>
       </form>

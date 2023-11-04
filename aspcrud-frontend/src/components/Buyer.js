@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function BuyersList() {
+function BuyerList() {
   const [Id, setId] = useState("");
   const [FName, setFName] = useState("");
   const [LName, setLName] = useState("");
@@ -259,5 +259,5 @@ function BuyersList() {
   );
 }
 
-export default BuyersList;
+export default BuyerList;
 
