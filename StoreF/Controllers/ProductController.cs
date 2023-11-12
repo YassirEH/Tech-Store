@@ -151,7 +151,7 @@ namespace webApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("Delete Peoduct/{productId}")]
+        [HttpDelete("Delete Product/{productId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
