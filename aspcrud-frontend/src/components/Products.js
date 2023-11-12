@@ -97,7 +97,7 @@ function ProductList() {
       setSelectedProduct(null);
       setProductName("");
       setProductdescription("");
-      setProductCategory(""); // Reset category
+      setProductCategory(""); 
       loadProducts();
     } catch (err) {
       alert(err);

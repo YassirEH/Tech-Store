@@ -125,7 +125,7 @@ namespace webApi.Controllers
         }
 
 
-        [HttpPut("{productId}")]
+        [HttpPut("Update Product/{productId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
@@ -151,7 +151,7 @@ namespace webApi.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{productId}")]
+        [HttpDelete("Delete Peoduct/{productId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
