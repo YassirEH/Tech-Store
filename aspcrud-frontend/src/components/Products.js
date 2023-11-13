@@ -145,54 +145,67 @@ function ProductList() {
     <div className="container mt-4">
       <h1 className="text-center">Products List</h1>
 
-      {/* Form for creating a new product */}
-      <form className="mb-4" onSubmit={save}>
-        <div className="form-row">
-          <div className="col">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Product Name"
-              value={productName}
-              onChange={(event) => {
-                setProductName(event.target.value);
-              }}
-            />
-          </div>
-          <div className="col">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Product Description"
-              value={productdescription}
-              onChange={(event) => {
-                setProductdescription(event.target.value);
-              }}
-            />
-          </div>
-          <div className="col">
-            <select
-              value={productCategory}
-              onChange={(event) => {
-                setProductCategory(event.target.value);
-              }}
-              className="form-control"
-            >
-              <option value="">Select a Category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col">
-            <button type="submit" className="btn btn-primary">
-              Register
-            </button>
-          </div>
-        </div>
-      </form>
+      <form className="mb-4" onSubmit={selectedProduct ? updateProduct : save}>
+  <div className="form-row">
+    <div className="col">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Product Name"
+        value={productName}
+        onChange={(event) => {
+          setProductName(event.target.value);
+        }}
+      />
+    </div>
+    <div className="col">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Product Description"
+        value={productdescription}
+        onChange={(event) => {
+          setProductdescription(event.target.value);
+        }}
+      />
+    </div>
+    <div className="col">
+      <select
+        value={productCategory}
+        onChange={(event) => {
+          setProductCategory(event.target.value);
+        }}
+        className="form-control"
+      >
+        <option value="">Select a Category</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+    </div>
+    <div className="col">
+      <button type="submit" className="btn btn-primary">
+        {selectedProduct ? "Update" : "Register"}
+      </button>
+      {selectedProduct && (
+        <button
+          type="button"
+          className="btn btn-secondary ml-2"
+          onClick={() => {
+            setSelectedProduct(null);
+            setProductName("");
+            setProductdescription("");
+            setProductCategory("");
+          }}
+        >
+          Cancel
+        </button>
+      )}
+    </div>
+  </div>
+</form>
 
       <div className="mb-4">
         <div className="input-group">
